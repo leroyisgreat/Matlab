@@ -27,7 +27,7 @@ if ~iscolumn(x) || ~iscolumn(n) || ~iscolumn(w)
 end
 
 % A matrix containing the e^-jwn term for all w, n
-E = exp( -j .* (w * (n')) );
+E = exp( -1i .* (w * (n')) );
 
 if (size(E,1) ~= size(w,1)) || (size(E,2) ~= size(n,1))
     error('unknown internal error: |E| != (|w|,|n|)')
