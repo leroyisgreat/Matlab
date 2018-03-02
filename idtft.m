@@ -3,7 +3,6 @@
 % LeRoy Gary           %
 % lgary@andrew.cmu.edu %
 %                      %
-% 18-491 Homework 2    %
 % 2018/28/02           %
 %                      %
 %%%%%%%%%%%%%%%%%%%%%%%%
