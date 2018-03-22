@@ -7,7 +7,7 @@
 %                      %
 %%%%%%%%%%%%%%%%%%%%%%%%
 
-function [X,w] = dft(x,N)
+function [X,w] = dft(x,N,varargin)
 % Computes the N-sampled Discrete Fourier Transform
 % [X,w] = dft(x,N)
 %
@@ -15,6 +15,19 @@ function [X,w] = dft(x,N)
 % X: DTFT sampled at w
 % x: time function to be transformed
 % N: number of samples at which to take the DFT
+   
+default = 'norm';
+expected = {'norm','nonorm'};
+
+i_p = inputParser;
+i_p.FunctionName = 'DFT';
+
+i_p.addRequired('x',@isnumeric);
+i_p.addRequired('N',@isnumeric);
+i_p.addOptional('opt',default,...
+                    @(z) any(validatestring(z,expected)));    
+
+i_p.parse(x,N,varargin{:});
 
 if ~isrow(x)
     error('x must be a row-vector')
@@ -41,5 +54,9 @@ if (size(WN,2) ~= length(w)) || (size(WN,1) ~= length(n))
 end
 
 X = xn * WN;
+
+if strcmp(i_p.Results.opt, default)
+    w = w / (2*pi/N);
+end
 
 end
