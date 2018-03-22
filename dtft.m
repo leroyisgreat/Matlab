@@ -3,6 +3,7 @@
 % LeRoy Gary           %
 % lgary@andrew.cmu.edu %
 %                      %
+% 18-491 Homework 2    %
 % 2018/29/01           %
 %                      %
 %%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,27 +12,26 @@ function X = dtft(x,n,w)
 % Computes Discrete-time Fourier Transform
 % [x] = dtft(x,n,w)
 %
-% X = DTFT values computed at frequencies w
-% x is a finite-duration sequence over n
-% n is the vector of "time" values over which the computation is
-% performed
-% w is a vector of frequencies used in the output
+% X: DTFT values computed at frequencies w
+% x: a finite-duration sequence over n
+% n: the "time" vector over which the computation is performed
+% w: a vector of frequencies used in the output
 
 if max(size(x) ~= size(n)) > 0
     error('vectors x and n must have the same size')
 end
 
-if ~iscolumn(x) || ~iscolumn(n) || ~iscolumn(w)
-    error('vectors x, n, and w must be vectors (1 column)')
+if ~isrow(x) || ~isrow(n) || ~isrow(w)
+    error('vectors x, n, and w must be row-vectors')
 end
 
 % A matrix containing the e^-jwn term for all w, n
-E = exp( -1i .* (w * (n')) );
+E = exp( -1i .* ((n') * w) );
 
-if (size(E,1) ~= size(w,1)) || (size(E,2) ~= size(n,1))
-    error('unknown internal error: |E| != (|w|,|n|)')
+if (size(E,2) ~= length(w)) || (size(E,1) ~= length(n))
+    error('unknown internal error: |E| != (|n|,|w|)')
 end
 
-X = E * x;
+X = x * E;
 
 end
