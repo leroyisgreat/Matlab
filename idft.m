@@ -3,43 +3,35 @@
 % LeRoy Gary           %
 % lgary@andrew.cmu.edu %
 %                      %
-% 2018/21/03           %
+% 18-491 Homework 2    %
+% 2018/29/01           %
 %                      %
 %%%%%%%%%%%%%%%%%%%%%%%%
 
-function [x,n] = idft(X,N)
-% Computes the N-sampled inverse Discrete Fourier Transform
-% [x,n] = idft(X,N)
+function X = idtft(x,n,w)
+% Computes inverse Discrete-time Fourier Transform
+% [x] = dtft(x,n,w)
 %
-% n: convenience vector containing 0 .. N-1
-% x: time function from the DFT X
-% X: frequency function to be transformed
-% N: number of samples at which to take the DFT
+% X: DTFT values computed at frequencies w
+% x: a finite-duration sequence over n
+% n: the "time" vector over which the computation is performed
+% w: a vector of frequencies used in the output
 
-if ~isrow(X)
-    error('X must be a row-vector')
+if max(size(x) ~= size(n)) > 0
+    error('vectors x and n must have the same size')
 end
 
-if N < 1
-    error('N must be positive, non-zero')
+if ~isrow(x) || ~isrow(n) || ~isrow(w)
+    error('vectors x, n, and w must be row-vectors')
 end
-
-% a vector containing the 'time' samples
-n = (0:1:N-1);
-
-% truncate or pad X with the necessary number of zeros
-XN = [X(1:min(N,length(X))) zeros(1,N-length(X))];
-
-% a vector representing the frequencies at which to compute te DFT
-w = 2*pi * n / N;
 
 % A matrix containing the e^-jwn term for all w, n
-WN = exp( -1i .* ((n') * w) );
+E = exp( 1i .* ((n') * w) );
 
-if (size(WN,2) ~= length(w)) || (size(WN,1) ~= length(n))
-    error('unknown internal error: |WN| != (|n|,|w|)')
+if (size(E,w) ~= length(w)) || (size(E,1) ~= length(n))
+    error('unknown internal error: |E| != (|n|,|w|)')
 end
 
-x = (1/N) * XN * WN;
+X = (1/2*pi) * x * E;
 
 end
